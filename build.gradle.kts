@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "dev.zornov.bdengine"
+group = "dev.zornov"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -28,36 +28,23 @@ kotlin {
 
 publishing {
     publications {
-        create<MavenPublication>("parser") {
+        create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "parser"
-            groupId    = project.group.toString()
-            version    = project.version.toString()
-
-            pom {
-                name.set("parser")
-                description.set("Parser for models")
-                url.set("https://github.com/Zornov/BDEngine-Parser")
-                developers {
-                    developer {
-                        id.set("Zornov")
-                        name.set("Sasha Zornov")
-                    }
-                }
-            }
+            groupId = "dev.zornov.parser"
+            artifactId = "bdengine"
+            version = "1.0-SNAPSHOT"
         }
     }
     repositories {
-        mavenLocal()
-
         maven {
-            name = "GitHubPackages"
-            url  = uri("https://maven.pkg.github.com/Zornov/BDEngine-Parser")
-            credentials {
-                username = findProperty("gpr.user") as String
-                password = findProperty("gpr.key")  as String
+            name = "reposlate"
+            url = uri("http://94.156.170.35:4040/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<BasicAuthentication>("basic")
             }
-            mavenContent { snapshotsOnly() }
+            isAllowInsecureProtocol = true
         }
     }
 }
+
